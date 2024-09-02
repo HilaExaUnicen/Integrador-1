@@ -4,8 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ProductoDao extends Dao {
+public class ProductoDao extends AbstractProductoDao {
 
+    @Override
     public void getProductoMasRecaudo() {
         super.initDb();
         String query = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +

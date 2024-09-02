@@ -4,8 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ClienteDao extends Dao {
+public class ClienteDao extends AbstractClienteDao {
 
+    @Override
     public void getClientesPorMontoFacturado() {
         initDb();
         String query = "SELECT c.idCliente, c.nombre, c.email, SUM(fp.cantidad * p.valor) AS totalFacturado " +
