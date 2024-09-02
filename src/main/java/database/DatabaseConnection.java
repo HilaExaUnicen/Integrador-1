@@ -11,20 +11,20 @@ public class DatabaseConnection {
         db = DatabaseConnection.getConnection();
     }
 
-    private static void initialize(){
-        if(db == null){
+    private static void initialize() {
+        try {
             String uri = "jdbc:derby:MyDerbyDB;create=true";
-            try {
+            if (db == null || db.isClosed()) {
                 db = DriverManager.getConnection(uri);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void closeConnection(){
+    public static void closeConnection() {
         try {
-            if(!db.isClosed()){
+            if (!db.isClosed()) {
                 db.close();
             }
         } catch (SQLException e) {
@@ -32,9 +32,13 @@ public class DatabaseConnection {
         }
     }
 
-    public static Connection getConnection(){
-        if(db == null){
-            initialize();
+    public static Connection getConnection() {
+        try {
+            if (db == null || db.isClosed()) {
+                initialize();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return db;

@@ -1,4 +1,4 @@
-package DAOs;
+package DTOs;
 
 public class Producto {
 
