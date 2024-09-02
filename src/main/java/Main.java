@@ -15,7 +15,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        var dbSetup = new DatabaseSetup();
+        DatabaseSetup dbSetup = new DatabaseSetup();
         String clientesCsvPath = "src/main/resources/csv/clientes.csv";
         String productosCsvPath = "src/main/resources/csv/productos.csv";
         String facturasCsvPath = "src/main/resources/csv/facturas.csv";
@@ -31,8 +31,8 @@ public class Main {
         dbSetup.loadFacturasFromCSV(facturasCsvPath);
         dbSetup.loadFacturaProductosFromCSV(facturaProductosCsvPath);
 
-        var productoDao = new ProductoDao();
-        var clienteDao = new ClienteDao();
+        ProductoDao productoDao = new ProductoDao();
+        ClienteDao clienteDao = new ClienteDao();
 
         productoDao.getProductoMasRecaudo();
         System.out.println(" ");

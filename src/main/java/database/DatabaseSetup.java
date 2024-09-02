@@ -110,27 +110,6 @@ public class DatabaseSetup {
         closeDb();
     }
 
-    public void listClientes() {
-        initDb();
-        String selectQuery = "SELECT * FROM Cliente";
-
-        try (Statement stmt = db.createStatement();
-             ResultSet rs = stmt.executeQuery(selectQuery)) {
-
-            while (rs.next()) {
-                int idCliente = rs.getInt("idCliente");
-                String nombre = rs.getString("nombre");
-                String email = rs.getString("email");
-
-                System.out.println("ID Cliente: " + idCliente + ", Nombre: " + nombre + ", Email: " + email);
-            }
-        } catch (SQLException e) {
-           throw new RuntimeException(e);
-        }
-
-        closeDb();
-    }
-
     public void loadProductosFromCSV(String csvFilePath) {
         initDb();
         String insertQuery = "INSERT INTO Producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
