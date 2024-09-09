@@ -1,10 +1,13 @@
-package DAOs;
+package DAOs.DerbyDAOsImplementation;
+
+import DAOs.DerbyDaoFactory;
+import DAOs.Interfaces.IProductoDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ProductoDao extends AbstractProductoDao {
+public class DerbyProductoDao extends DerbyDaoFactory implements IProductoDao {
 
     @Override
     public void getProductoMasRecaudo() {
@@ -14,7 +17,7 @@ public class ProductoDao extends AbstractProductoDao {
                 "JOIN FacturaProducto fp ON p.idProducto = fp.idProducto " +
                 "GROUP BY p.idProducto, p.nombre " +
                 "ORDER BY recaudacion DESC " +
-                "FETCH FIRST ROW ONLY"; //Derby no permite la clausula limit
+                "FETCH FIRST ROW ONLY"; //Derby no permite la clausula limit, por eso usamos fetch first
 
         try (Statement stmt = super.getDb().createStatement();
              ResultSet rs = stmt.executeQuery(query)) {

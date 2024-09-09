@@ -9,26 +9,40 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.IOException;
 
-import static database.DatabaseConnection.getConnection;
-
-
 public class DatabaseSetup {
 
     private Connection db;
 
     public DatabaseSetup() {
-        db = getConnection();
+        db = DerbyDatabaseConnection.getConnection();
     }
 
     private void initDb() {
-        db = getConnection();
+        db = DerbyDatabaseConnection.getConnection();
     }
 
     private void closeDb() {
-        DatabaseConnection.closeConnection();
+        DerbyDatabaseConnection.closeConnection();
     }
 
-    public void createClienteTable() {
+    public void cargarBaseDeDatos() {
+        String clientesCsvPath = "src/main/resources/csv/clientes.csv";
+        String productosCsvPath = "src/main/resources/csv/productos.csv";
+        String facturasCsvPath = "src/main/resources/csv/facturas.csv";
+        String facturaProductosCsvPath = "src/main/resources/csv/facturas-productos.csv";
+
+        this.createClienteTable();
+        this.createProductoTable();
+        this.createFacturaTable();
+        this.createFacturaProductoTable();
+
+        this.loadClientesFromCSV(clientesCsvPath);
+        this.loadProductosFromCSV(productosCsvPath);
+        this.loadFacturasFromCSV(facturasCsvPath);
+        this.loadFacturaProductosFromCSV(facturaProductosCsvPath);
+    }
+
+    private void createClienteTable() {
         String clienteTableCreationQuery = "CREATE TABLE Cliente ("
                 + "idCliente INT PRIMARY KEY, "
                 + "nombre VARCHAR(500), "
@@ -37,7 +51,7 @@ public class DatabaseSetup {
         executeQuery(clienteTableCreationQuery);
     }
 
-    public void createProductoTable() {
+    private void createProductoTable() {
         String productoTableCreationQuery = "CREATE TABLE Producto ("
                 + "idProducto INT PRIMARY KEY, "
                 + "nombre VARCHAR(45), "
@@ -46,7 +60,7 @@ public class DatabaseSetup {
         executeQuery(productoTableCreationQuery);
     }
 
-    public void createFacturaTable() {
+    private void createFacturaTable() {
         String facturaTableCreationQuery = "CREATE TABLE Factura ("
                 + "idFactura INT PRIMARY KEY, "
                 + "idCliente INT, "
@@ -56,7 +70,7 @@ public class DatabaseSetup {
         executeQuery(facturaTableCreationQuery);
     }
 
-    public void createFacturaProductoTable() {
+    private void createFacturaProductoTable() {
         String facturaProductoTableCreationQuery = "CREATE TABLE FacturaProducto ("
                 + "idFactura INT, "
                 + "idProducto INT, "
@@ -81,7 +95,7 @@ public class DatabaseSetup {
         closeDb();
     }
 
-    public void loadClientesFromCSV(String csvFilePath) {
+    private void loadClientesFromCSV(String csvFilePath) {
         initDb();
         String insertQuery = "INSERT INTO Cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
 
@@ -110,7 +124,7 @@ public class DatabaseSetup {
         closeDb();
     }
 
-    public void loadProductosFromCSV(String csvFilePath) {
+    private void loadProductosFromCSV(String csvFilePath) {
         initDb();
         String insertQuery = "INSERT INTO Producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
 
@@ -139,7 +153,7 @@ public class DatabaseSetup {
         closeDb();
     }
 
-    public void loadFacturasFromCSV(String csvFilePath) {
+    private void loadFacturasFromCSV(String csvFilePath) {
         initDb();
         String insertQuery = "INSERT INTO Factura (idFactura, idCliente) VALUES (?, ?)";
 
@@ -166,7 +180,7 @@ public class DatabaseSetup {
         closeDb();
     }
 
-    public void loadFacturaProductosFromCSV(String csvFilePath) {
+    private void loadFacturaProductosFromCSV(String csvFilePath) {
         initDb();
         String insertQuery = "INSERT INTO FacturaProducto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
 

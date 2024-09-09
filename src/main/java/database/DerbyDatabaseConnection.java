@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnection {
+public class DerbyDatabaseConnection {
     private static Connection db;
 
-    private DatabaseConnection() {
-        db = DatabaseConnection.getConnection();
+    private DerbyDatabaseConnection() {
+        db = DerbyDatabaseConnection.getConnection();
     }
 
     private static void initialize() {

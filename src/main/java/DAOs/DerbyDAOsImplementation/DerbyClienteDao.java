@@ -1,14 +1,17 @@
-package DAOs;
+package DAOs.DerbyDAOsImplementation;
+
+import DAOs.DerbyDaoFactory;
+import DAOs.Interfaces.IClienteDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ClienteDao extends AbstractClienteDao {
+public class DerbyClienteDao extends DerbyDaoFactory implements IClienteDao {
 
     @Override
     public void getClientesPorMontoFacturado() {
-        initDb();
+        super.initDb();
         String query = "SELECT c.idCliente, c.nombre, c.email, SUM(fp.cantidad * p.valor) AS totalFacturado " +
                 "FROM Cliente c " +
                 "JOIN Factura f ON c.idCliente = f.idCliente " +
@@ -33,6 +36,6 @@ public class ClienteDao extends AbstractClienteDao {
             throw new RuntimeException(e);
         }
 
-        closeDb();
+        super.closeDb();
     }
 }

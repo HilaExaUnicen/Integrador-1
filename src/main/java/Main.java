@@ -1,5 +1,7 @@
-import DAOs.ClienteDao;
-import DAOs.ProductoDao;
+import DAOs.DaoFactory;
+import DAOs.DerbyDaoFactory;
+import DAOs.Interfaces.IClienteDao;
+import DAOs.Interfaces.IProductoDao;
 import database.DatabaseSetup;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,23 +18,12 @@ public class Main {
         }
 
         DatabaseSetup dbSetup = new DatabaseSetup();
-        String clientesCsvPath = "src/main/resources/csv/clientes.csv";
-        String productosCsvPath = "src/main/resources/csv/productos.csv";
-        String facturasCsvPath = "src/main/resources/csv/facturas.csv";
-        String facturaProductosCsvPath = "src/main/resources/csv/facturas-productos.csv";
 
-        dbSetup.createClienteTable();
-        dbSetup.createProductoTable();
-        dbSetup.createFacturaTable();
-        dbSetup.createFacturaProductoTable();
+        dbSetup.cargarBaseDeDatos();
+        DaoFactory derbyFactory = new DerbyDaoFactory();
 
-        dbSetup.loadClientesFromCSV(clientesCsvPath);
-        dbSetup.loadProductosFromCSV(productosCsvPath);
-        dbSetup.loadFacturasFromCSV(facturasCsvPath);
-        dbSetup.loadFacturaProductosFromCSV(facturaProductosCsvPath);
-
-        ProductoDao productoDao = new ProductoDao();
-        ClienteDao clienteDao = new ClienteDao();
+        IClienteDao clienteDao = derbyFactory.getClienteDao();
+        IProductoDao productoDao = derbyFactory.getProductoDao();
 
         productoDao.getProductoMasRecaudo();
         System.out.println(" ");
